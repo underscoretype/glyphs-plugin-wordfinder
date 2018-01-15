@@ -13,7 +13,7 @@ def removeNumbers(text):
     return regex.sub(ur"\d+", "", text)
 
 
-# Remove any word that does not consist of the passed in glyphs, i.e. can't
+# Remove any word that includes other than the passed in glyphs, i.e. can't
 # be written
 def filterWordsByGlyphs(words, glyphs, inWord = False, minWordLength = 5):
     if not words:
@@ -21,6 +21,8 @@ def filterWordsByGlyphs(words, glyphs, inWord = False, minWordLength = 5):
 
     if not glyphs:
         return words
+
+    print glyphs
 
     filtered = []
     for word in words:
