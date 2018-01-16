@@ -3,8 +3,8 @@
 import os, random, re
 import text
 
-wordsFile = "words/test.txt"
-wordsDir = "words/"
+wordsFile = os.path.dirname(os.path.realpath(__file__)) + "/words/test.txt"
+wordsDir = os.path.dirname(os.path.realpath(__file__)) + "/words/"
 words = []
 
 
@@ -45,15 +45,15 @@ def filter(txt, requiredLetters = False, wordMinLength = False):
 	return words
 
 
-def get_words(amount = 1, letters = False):
+def get_words(amount = 1, letters = False, availableLetters = False):
 	# text = load(wordsFile)
 	text = loadAllInDirectory(wordsDir)
 
 	print len(text), letters
 
-	availableLetters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", 
-		"p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",
-		u"è", u"é"]
+	if availableLetters == False:
+		availableLetters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", u"è", u"é"]
+
 	text = filter(text, availableLetters, letters)
 
 	print text
@@ -114,6 +114,8 @@ def get_words(amount = 1, letters = False):
 			words.append(word)
 
 	print words
+
+	return words
 
 # testing on cli
 if __name__ == "__main__":
