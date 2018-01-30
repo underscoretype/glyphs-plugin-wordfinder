@@ -45,19 +45,33 @@ class ShowMeTheWords(GeneralPlugin):
         print "available glyphs"
         print glyphs
 
+        if not glyphs:
+            return
+
         selected = []
-        for layer in Glyphs.font.selectedLayers:
+        for layer in Glyphs.fonts[0].selectedLayers:
             glyph = layer.parent
-            selected.append( unichr(int(glyph.unicode, 16) ) )
+            if glyph.unicode:
+                selected.append( unichr(int(glyph.unicode, 16) ) )
 
         print "selected glyphs"
         print selected
 
-        words = get_words(amount = 10, letters = selected, availableLetters = glyphs)
+        if not selected:
+            return
 
-        print "words"
-        print words
-        print " ".join(words)
-            
-        #Glyphs.font.newTab(unichr(int("0053", 16)))
-        Glyphs.font.newTab(" ".join(words))
+        try:
+            words = get_words(amount = 10, letters = selected, availableLetters = glyphs)
+
+            print "words"
+            print words
+            print " ".join(words)
+
+        except:
+            print "nope"
+            e = sys.exc_info()[0]
+            print e
+        
+        if words:
+            #Glyphs.font.newTab(unichr(int("0053", 16)))
+            Glyphs.font.newTab(" ".join(words))

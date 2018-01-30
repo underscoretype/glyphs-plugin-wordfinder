@@ -17,16 +17,18 @@ def load(path):
 	return txt
 
 
-def loadAllInDirectory(directory):
-	text = ""
+def loadAllInDirectory(directory, minLength = 3):
+	string = ""
 
 	directorylist = os.listdir(directory)
 	for file in directorylist:
 		loaded = load(directory + file)
 		if loaded:
-			text = text + "\n" + loaded
+			for part in loaded.split(" "):
+				if len(part) >= minLength:
+					string = string + "\n" + part
 
-	return text
+	return string
 
 
 # Filter the input text to what we need it
@@ -51,8 +53,8 @@ def get_words(amount = 1, letters = False, availableLetters = False):
 
 	print len(text), letters
 
-	if availableLetters == False:
-		availableLetters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", u"è", u"é"]
+	if not text or not availableLetters or not letters:
+		return
 
 	text = filter(text, availableLetters, letters)
 
@@ -108,7 +110,7 @@ def get_words(amount = 1, letters = False, availableLetters = False):
 
 	# print len(wordsBase)
 
-	while (len(words) < amount):
+	while (len(words) < min(amount, len(wordsBase))):
 		word = random.choice(wordsBase)
 		if word not in words:
 			words.append(word)
@@ -117,8 +119,46 @@ def get_words(amount = 1, letters = False, availableLetters = False):
 
 	return words
 
+
+def word_rating(words):
+	#print words
+
+	wordsByLetters = {}
+
+	for word in words.split("\n"):
+		registeredWordLetters = []
+		for letter in word:
+			if letter != "\n" and letter not in registeredWordLetters:
+				if letter not in wordsByLetters:
+					wordsByLetters[letter] = []
+				
+				# print "WORD", word
+				wordsByLetters[letter].append(word)
+				registeredWordLetters.append(letter)
+				break
+
+	# print wordsByLetters
+
+	for key in wordsByLetters.keys():
+		print "key", key, "num words", len(wordsByLetters[key])
+
+
+
 # testing on cli
 if __name__ == "__main__":
-	get_words(10, [u"é", u"è", "a", "t", "s", "u", "i"])
+	# get_words(10, [u"é", u"è", "a", "t", "s", "u", "i"])
+	availableLetters = ["2", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", u"è", u"é"]
+	get_words(10, [u"q"], availableLetters)
+
+	# strings = loadAllInDirectory(wordsDir)
+	# availableLetters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", u"è", u"é"]
+
+	# strings = filter(strings, availableLetters, [u"a", u"b", u"c"])
+	# # print strings
+	
+	# rated_words = word_rating(" ".join(strings))
+	# print rated_words
+
+	
 
 
