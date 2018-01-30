@@ -11,7 +11,7 @@
 #
 ###########################################################################################################
 
-import objc
+import objc, sys
 from GlyphsApp import *
 from GlyphsApp.plugins import *
 
@@ -34,8 +34,8 @@ class ShowMeTheWords(GeneralPlugin):
 
 
     def showWords(self, foo):
-        print foo
-        print Glyphs.font.selectedLayers
+        font = Glyphs.fonts[0]
+        tab = font.currentTab
 
         glyphs = []
         for glyph in Glyphs.font.glyphs:
@@ -61,7 +61,7 @@ class ShowMeTheWords(GeneralPlugin):
             return
 
         try:
-            words = get_words(amount = 10, letters = selected, availableLetters = glyphs)
+            words = get_words(amount = 1, letters = selected, availableLetters = glyphs)
 
             print "words"
             print words
@@ -74,4 +74,10 @@ class ShowMeTheWords(GeneralPlugin):
         
         if words:
             #Glyphs.font.newTab(unichr(int("0053", 16)))
-            Glyphs.font.newTab(" ".join(words))
+
+            if tab is None:
+                Glyphs.font.newTab(" ".join(words))
+            else:
+                pos = tab.layersCursor
+                selection = tab.textRange
+                tab.text = tab.text[:pos] + " " + words[0] + " " + tab.text[pos + selection + 1:]
