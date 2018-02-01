@@ -19,6 +19,9 @@ def removeNumbers(text):
 # Remove any word that includes other than the passed in glyphs, i.e. can't
 # be written
 def filterWordsByGlyphs(words, glyphs, inWord = False, minWordLength = 5):
+    print "filter words made up of glyphs", glyphs
+    print "containing any of", inWord
+    print "min length", minWordLength
     if not words:
         return False
 
@@ -26,6 +29,8 @@ def filterWordsByGlyphs(words, glyphs, inWord = False, minWordLength = 5):
         return words
 
     print glyphs
+
+    print "WORDS", words
 
     filtered = []
     for word in words:
@@ -35,6 +40,7 @@ def filterWordsByGlyphs(words, glyphs, inWord = False, minWordLength = 5):
         validWord = True
         for letter in word:
             if letter not in glyphs:
+                # print letter, "not in glyphs"
                 validWord = False
                 break
 
@@ -50,6 +56,22 @@ def filterWordsByGlyphs(words, glyphs, inWord = False, minWordLength = 5):
 
                 # otherwise just allow this word
                 filtered.append(word)
+
+    return filtered
+
+
+def wordsThatHaveAnyOf(words, glyphs, minWordLength = 5):
+    filtered = []
+    for word in words:
+        # print word
+        # if word is "" or len(word) < minWordLength:
+        #     continue
+
+        for glyph in glyphs:
+            # print glyph, word
+            if glyph in word:
+                filtered.append(word)
+                break
 
     return filtered
 

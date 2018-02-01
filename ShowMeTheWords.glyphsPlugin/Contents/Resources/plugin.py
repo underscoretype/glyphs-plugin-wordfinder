@@ -36,8 +36,10 @@ class ShowMeTheWords(GeneralPlugin):
     def showWords(self, foo):
         font = Glyphs.fonts[0]
         tab = font.currentTab
-
         glyphs = []
+        words = []
+        selected = []
+
         for glyph in Glyphs.font.glyphs:
             if glyph.unicode:
                 glyphs.append(unichr(int(glyph.unicode, 16)))
@@ -48,7 +50,6 @@ class ShowMeTheWords(GeneralPlugin):
         if not glyphs:
             return
 
-        selected = []
         for layer in Glyphs.fonts[0].selectedLayers:
             glyph = layer.parent
             if glyph.unicode:
