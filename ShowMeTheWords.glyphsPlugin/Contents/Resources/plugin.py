@@ -15,7 +15,7 @@ import objc, sys
 from GlyphsApp import *
 from GlyphsApp.plugins import *
 
-from words import *
+from wordfinder import *
 
 class ShowMeTheWords(GeneralPlugin):
     
