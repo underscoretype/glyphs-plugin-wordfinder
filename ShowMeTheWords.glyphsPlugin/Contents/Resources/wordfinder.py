@@ -93,6 +93,8 @@ def bestWord(values):
 	quality score: [11, 7]
 	return: 2 (index of [5, 2, 0] in values)
 	"""
+
+	# TODO prioritize matches where the search character are center
 	matches = []
 	num = 0
 	for index, value in enumerate(values):
@@ -120,24 +122,11 @@ def prettyList(li):
 	return repr([x.encode(sys.stdout.encoding) for x in li]).decode('string-escape')
 
 
-# testing on cli
+# dummy testing on cli
 if __name__ == "__main__":
-	# get_words(10, [u"é", u"è", "a", "t", "s", "u", "i"])
 	availableLetters = [ u"ß", u"ÿ", u"á", "a", "b", "c", "d", "e", "f", 
 		"g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", 
 		"u", "v", "w", "x", "y", "z", u"è", u"é", "A", "B", "C", "D", u"ä", u"ü"]
-	# wordfinder(availableLetters, [u"q", u"u", u"t", u"l", u"o", u"x", "y", u"ß", "e", "a"])
 	wordfinder(availableLetters, [u"ü", "z", u"è", u"é"])
-
-	# strings = loadAllInDirectory(wordsDir)
-	# availableLetters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", u"è", u"é"]
-
-	# strings = filter(strings, availableLetters, [u"a", u"b", u"c"])
-	# # print strings
-	
-	# rated_words = word_rating(" ".join(strings))
-	# print rated_words
-
-	
 
 
