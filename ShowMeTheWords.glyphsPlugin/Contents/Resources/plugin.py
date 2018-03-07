@@ -87,6 +87,16 @@ class ShowMeTheWords(GeneralPlugin):
             else:
                 pos = tab.layersCursor
                 selection = tab.textRange
-                tab.text = tab.text[:pos] + " " + text + " " + tab.text[pos + selection + 1:]
+                before = " "
+                after = " "
+                # if selection is first char, don't pad front
+                if pos == 0:
+                    before = ""
+
+                # if selection is last char, don't pad end
+                if pos == len(tab.layers) - 1:
+                    after = ""
+                tab.text = tab.text[:pos] + before + text + after + tab.text[pos + selection:]
+
         else:
             print "No matching words found"
