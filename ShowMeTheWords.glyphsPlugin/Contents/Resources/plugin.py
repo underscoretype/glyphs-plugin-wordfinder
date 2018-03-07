@@ -39,6 +39,7 @@ class ShowMeTheWords(GeneralPlugin):
         glyphs = []
         words = []
         selected = []
+        test = ""
 
         for glyph in Glyphs.font.glyphs:
             if glyph.unicode:
@@ -62,23 +63,30 @@ class ShowMeTheWords(GeneralPlugin):
             return
 
         try:
-            words = get_words(amount = 1, letters = selected, availableLetters = glyphs)
+            words, missing = wordfinder(glyphs, selected)
 
             print "words"
             print words
             print " ".join(words)
+            print "missing from search "
+            print missing
 
         except:
             print "nope"
             e = sys.exc_info()[0]
             print e
         
-        if words:
+        if words or missing:
             #Glyphs.font.newTab(unichr(int("0053", 16)))
+            text = " ".join(words)            
+            if len(missing) > 0:
+                text = text + "\n\n" + " ".join(missing)
 
             if tab is None:
-                Glyphs.font.newTab(" ".join(words))
+                Glyphs.font.newTab(text)
             else:
                 pos = tab.layersCursor
                 selection = tab.textRange
-                tab.text = tab.text[:pos] + " " + words[0] + " " + tab.text[pos + selection + 1:]
+                tab.text = tab.text[:pos] + " " + text + " " + tab.text[pos + selection + 1:]
+        else:
+            print "No matching words found"

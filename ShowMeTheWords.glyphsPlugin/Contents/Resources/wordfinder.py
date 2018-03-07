@@ -76,6 +76,7 @@ def wordfinder(available, required):
 		print "req", len(required), required
 
 	# print words
+	return words, required
 	print prettyList(words)
 	print "end"
 
