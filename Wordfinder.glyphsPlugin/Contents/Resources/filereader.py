@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 import os, re
 
 def load(path):
@@ -6,7 +9,7 @@ def load(path):
 	Return String of file content
 	"""
 	if not os.path.isfile(path):
-		return exit("No file to load")
+		return False
 	else:
 		file = open(path, "r")
 		txt = file.read().decode("utf-8")
@@ -21,9 +24,12 @@ def loadWords(directory):
 	words = []
 	directorylist = os.listdir(directory)
 	for file in directorylist:
-		loaded = load(directory + file)
-		if loaded:
-			for part in re.compile("\s").split(loaded):
-				words.append(part)
+		try:
+			loaded = load(directory + file)
+			if loaded:
+				for part in re.compile("\s").split(loaded):
+					words.append(part)
+		except:
+			words = words
 
 	return words

@@ -1,20 +1,20 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import re
+
 def filterWritableWords(words, letters):
     """
     Filter out all words that cannot be written with the given letters
     Return List of words can be written with the given letters
     """
-    filtered = []
-    for word in words:
-        writeable = True
-        for letter in word:
-            if letter not in letters:
-                writeable = False
-                break 
-        if writeable:
-            filtered.append(word)
+    containsSomeLetters = re.compile("[" + "".join(letters) + "]+", re.UNICODE)
+    containsOtherLetters = re.compile("[^" + "".join(letters) + "]+", re.UNICODE)
+
+    # very efficient way of determining if a word is made up entirely of the supplied
+    # characters; fails fast if the word contains NO characters at all, and faster
+    # second check with regex, compared to for .. in
+    filtered = [w for w in words if containsSomeLetters.search(w) != None and containsOtherLetters.search(w) == None]
 
     return filtered
 
@@ -24,14 +24,9 @@ def filterInterestWords(words, letters):
     Filter out all words that don't contain any of the letters
     Return List of words that contain at least one of letters
     """
-    filtered = []
-    for word in words:
-        interest = False
-        for letter in word:
-            if letter in letters:
-                interest = True
-        if interest:
-            filtered.append(word)
+    containsSomeLetters = re.compile("[" + "".join(letters) + "]+", re.UNICODE)
+
+    filtered = [w for w in words if containsSomeLetters.search(w) != None]
 
     return filtered
 
@@ -80,7 +75,5 @@ def weightLetters(words, letters):
             else:
                 occurrances[letter] = occurrances[letter] + 1
 
-    # for letter, value in occurrances.items():
-    #     occurrances[letter] = value / len(letters)
-
     return occurrances
+    

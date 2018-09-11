@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+
 import os, random, re, sys
 
 from filereader import loadWords
@@ -9,41 +10,85 @@ from texthelper import filterWritableWords, filterInterestWords, weightWords
 # keep a global record of words, so we don't need to reload them for each call
 words = []
 
+# cache some stuff if it doesn't change
+lastDir = None
+lastAvailable = []
+lastRequired = []
+lastWriteable = []
+lastInteresting = []
 
-def getWords():
+
+def getWords(customDir=None):
 	"""
 	Return List of words, from cache or load it
 	"""
-	global words
-	if len(words) == 0:
-		words = loadWords(os.path.dirname(os.path.realpath(__file__)) + "/words/")
-		title = [word.capitalize() for word in words]
-		caps = [word.upper() for word in words]
+	global words, lastDir
+
+	loaded = 0
+
+	if customDir != None and customDir[-1:] != "/":
+		customDir = customDir + "/"
+
+	# after first use return the cached word list instead of making
+	# another file read; this can be a substantial portion of the
+	# compute time to find a matching word!
+	if len(words) != 0 and (lastDir == customDir and customDir != None):
 		
-		words = words + title + caps
+		return words
+
+	try:
+		if customDir != None:
+			lastDir = customDir
+			words = loadWords(lastDir)
+			loaded = len(words)
+	except:
+		lastDir = None
+
+	# if loading from customDir still returned 0 words load from plugin
+	if len(words) == 0 or loaded == 0:
+		lastDir = os.path.dirname(os.path.realpath(__file__)) + "/words/"
+		words = loadWords(lastDir)
+
+	# augment the word list by adding spelling variants of all loaded words
+	title = [word.capitalize() for word in words]
+	caps = [word.upper() for word in words]
+	lower = [word.lower() for word in words]
+	
+	words = words + title + caps + lower
+	words = list(set(words))
 
 	return words
 
 
-def wordfinder(available, required):
+def wordfinder(available, required, customDir=None):
 	"""
 	Attempt to find the least amount of words spelled from the available 
 	letters and using all required letters
 	"""
+	global lastAvailable, lastRequired, lastWriteable, lastInteresting
+
 	# make both input letters lists free of duplicates
 	available = list(set(available))
 	required = list(set(required))
 
-	universe = getWords()
+	if available != lastAvailable or lastDir != customDir:
+		# this is one of the most time expensive actions, only
+		# perform it if the glyphset in the font changed
+		words = getWords(customDir)
 
-	# reduce a request for required by those letters not in available
-	if not set(required).issubset(set(available)):
-		illegal = set(required).difference(set(available))
-		required = list(set(required).intersection(set(available)))
+		if not set(required).issubset(set(available)):
+			#illegal = set(required).difference(set(available))
+			required = list(set(required).intersection(set(available)))
 
-	universe = filterWritableWords(universe, available)
-	universe = filterInterestWords(universe, required)
-	words = []
+		lastWriteable = filterWritableWords(words, available)
+		lastAvailable = available
+	
+	if required != lastRequired:
+		lastInteresting = filterInterestWords(lastWriteable, required)
+		lastRequired = required
+
+	matches = []
+	universe = lastInteresting
 
 	while len(required) > 0:
 		wordsValues = weightWords(universe, required)
@@ -52,13 +97,13 @@ def wordfinder(available, required):
 		if bestWordIndex == False:
 			break
 
-		word = universe[bestWordIndex]
-		words.append(word)
-		letters = list(set([letter for letter in word]).intersection(set(required)))
+		match = universe[bestWordIndex]
+		matches.append(match)
+		letters = list(set([letter for letter in match]).intersection(set(required)))
 		del universe[bestWordIndex]
 		required = list(set(required).difference(set(letters)))
-		
-	return words, required
+
+	return matches, required
 	
 
 def bestWord(values):
@@ -87,11 +132,12 @@ def bestWord(values):
 			matches.append({reduce(lambda x, y: x + y, value): index})
 
 	if num == 0:
+
 		return False
 
 	if matches:
 		match = random.choice(matches)
-		
+
 		return match.values()[0]
 
 	return False
@@ -107,5 +153,3 @@ if __name__ == "__main__":
 		"g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", 
 		"u", "v", "w", "x", "y", "z", u"è", u"é", "A", "B", "C", "D", u"ä", u"ü"]
 	wordfinder(availableLetters, [u"ü", "z", u"è", u"é"])
-
-
