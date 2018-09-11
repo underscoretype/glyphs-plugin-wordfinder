@@ -85,18 +85,19 @@ class ShowMeTheWords(GeneralPlugin):
             if tab is None:
                 Glyphs.font.newTab(text)
             else:
-                pos = tab.layersCursor
-                selection = tab.textRange
-                before = " "
-                after = " "
-                # if selection is first char, don't pad front
-                if pos == 0:
-                    before = ""
+                # pos = tab.layersCursor
+                # selection = tab.textRange
+                # before = " "
+                # after = " "
+                # # if selection is first char, don't pad front
+                # if pos == 0:
+                #     before = ""
 
-                # if selection is last char, don't pad end
-                if pos == len(tab.layers) - 1:
-                    after = ""
-                tab.text = tab.text[:pos] + before + text + after + tab.text[pos + selection:]
+                # # if selection is last char, don't pad end
+                # if pos == len(tab.layers) - 1:
+                #     after = ""
+                # tab.text = tab.text[:pos] + before + text + after + tab.text[pos + selection:]
+                tab.text = tab.text + "\n" + text
 
         else:
             print "No matching words found"
