@@ -35,51 +35,31 @@ def wordfinder(available, required):
 	required = list(set(required))
 
 	universe = getWords()
-	print "dictionary total length", len(universe)
 
 	# reduce a request for required by those letters not in available
 	if not set(required).issubset(set(available)):
 		illegal = set(required).difference(set(available))
-		print "ILLEGAL", illegal, "required but not available"
 		required = list(set(required).intersection(set(available)))
 
-	# TODO output warning about available characters not in the universe
-	
-	print "required", required
-
-	# TODO if required are all uppercase, transform universe
-
 	universe = filterWritableWords(universe, available)
-	print "dictionary writeable length", len(universe)
-
 	universe = filterInterestWords(universe, required)
-	print "dictionary relevant length", len(universe)
-
 	words = []
 
 	while len(required) > 0:
 		wordsValues = weightWords(universe, required)
-		# print wordsValues
 
 		bestWordIndex = bestWord(wordsValues)
 		if bestWordIndex == False:
-			print "no match found"
 			break
 
 		word = universe[bestWordIndex]
 		words.append(word)
 		letters = list(set([letter for letter in word]).intersection(set(required)))
-		print "word", word, "satisfies", letters
 		del universe[bestWordIndex]
-		print "req", len(required), required
 		required = list(set(required).difference(set(letters)))
-		print "req", len(required), required
-
-	# print words
+		
 	return words, required
-	print prettyList(words)
-	print "end"
-
+	
 
 def bestWord(values):
 	"""
@@ -106,9 +86,7 @@ def bestWord(values):
 		if relevant == num:
 			matches.append({reduce(lambda x, y: x + y, value): index})
 
-	# print "bestWords", num, matches
 	if num == 0:
-		print "No words with matches found"
 		return False
 
 	if matches:

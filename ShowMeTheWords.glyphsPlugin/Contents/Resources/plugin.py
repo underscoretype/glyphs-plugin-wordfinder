@@ -22,8 +22,6 @@ class ShowMeTheWords(GeneralPlugin):
     def settings(self):
         self.name = Glyphs.localize({'en': u'Show Me The Words'})
 
-        # self.keyboardShortcut("f")
-
 
     def start(self):
         # create a menu item with its name, and a reference to the method it shoud invoke:
@@ -45,9 +43,6 @@ class ShowMeTheWords(GeneralPlugin):
             if glyph.unicode:
                 glyphs.append(unichr(int(glyph.unicode, 16)))
 
-        print "available glyphs"
-        print glyphs
-
         if not glyphs:
             return
 
@@ -56,28 +51,15 @@ class ShowMeTheWords(GeneralPlugin):
             if glyph.unicode:
                 selected.append( unichr(int(glyph.unicode, 16) ) )
 
-        print "selected glyphs"
-        print selected
-
         if not selected:
             return
 
         try:
             words, missing = wordfinder(glyphs, selected)
-
-            print "words"
-            print words
-            print " ".join(words)
-            print "missing from search "
-            print missing
-
         except:
-            print "nope"
             e = sys.exc_info()[0]
-            print e
         
         if words or missing:
-            #Glyphs.font.newTab(unichr(int("0053", 16)))
             text = " ".join(words)            
             if len(missing) > 0:
                 text = text + "\n\n" + " ".join(missing)
@@ -85,19 +67,7 @@ class ShowMeTheWords(GeneralPlugin):
             if tab is None:
                 Glyphs.font.newTab(text)
             else:
-                # pos = tab.layersCursor
-                # selection = tab.textRange
-                # before = " "
-                # after = " "
-                # # if selection is first char, don't pad front
-                # if pos == 0:
-                #     before = ""
-
-                # # if selection is last char, don't pad end
-                # if pos == len(tab.layers) - 1:
-                #     after = ""
-                # tab.text = tab.text[:pos] + before + text + after + tab.text[pos + selection:]
                 tab.text = tab.text + "\n" + text
 
         else:
-            print "No matching words found"
+            # print "No matching words found"
