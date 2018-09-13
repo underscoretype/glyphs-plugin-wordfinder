@@ -44,6 +44,17 @@ A lot of effort has gone into making the plugin work *automagically*. With the p
 
 If you want to **perform even faster searches** or use your own dictionary of possible results consider adding those as described above under "Customizing". Since the default dictionary tries to be very inclusive in terms of script support it also has overhead when scanning for words. An ideal word list should have good glyph coverage for the script of the font and a balance of mid to long words.
 
+### Words, words, words
+
+The current version of the plugin ships with the following dictionary files:
+
+- Wordlist extracted from the [multi-script version of the declaration of human rights](https://unicode.org/udhr/assemblies/full_all.txt) covering a large number of scripts
+- Words with accented latin letters from [Setuptype](http://setuptype.com)’s [Context of Diacritics](http://www.urtd.net/x/cod/) (included with permission)
+
+Have a good dictionary? List of words containing words with obscure glyphs? Files covering non-latin scripts? I'd happily add them, open an issue here or [email me](mailto:support@underscoretype.com).
+
+To generate more *usable* (i.e. cleaned up, no duplicates) dictionary files from your own dictionary files feel free to use the included [fileparser.py](https://github.com/underscoretype/glyphs-plugin-wordfinder/blob/master/fileparser.py): `python fileparser.py textfile.txt` will save an optimised `textfile-parsed.txt`.
+
 ### About
 
 [Wordfinder](https://github.com/underscoretype/glyphs-plugin-wordfinder) is brought to you by [Underscore Type](https://underscoretype.com).
