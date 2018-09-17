@@ -1,7 +1,19 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import re
+import re, struct
+
+
+def unichar(i):
+    """
+    A way to return unicode chars for the range above FFFF for "narrow python builds"
+    Solution from https://stackoverflow.com/a/28326717/999162
+    """
+    try:
+        return unichr(i)
+    except ValueError:
+        return struct.pack('i', i).decode('utf-32')
+
 
 def filterWritableWords(words, letters):
     """
