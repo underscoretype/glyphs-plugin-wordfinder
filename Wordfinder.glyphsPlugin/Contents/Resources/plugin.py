@@ -17,6 +17,7 @@ from GlyphsApp import *
 from GlyphsApp.plugins import *
 
 from wordfinder import *
+from texthelper import unichar
 
 class Wordfinder(GeneralPlugin):
     
@@ -43,7 +44,7 @@ class Wordfinder(GeneralPlugin):
 
         for glyph in Glyphs.font.glyphs:
             if glyph.unicode:
-                glyphs.append(unichr(int(glyph.unicode, 16)))
+                glyphs.append(unichar(int(glyph.unicode, 16)))
 
         if not glyphs:
             return
@@ -56,7 +57,7 @@ class Wordfinder(GeneralPlugin):
                 if layer.isMemberOfClass_(GSLayer):
                     glyph = layer.parent
                     if glyph.unicode:
-                        selected.append(unichr(int(glyph.unicode, 16)))
+                        selected.append(unichar(int(glyph.unicode, 16)))
 
         if not selected:
             return
