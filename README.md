@@ -50,10 +50,11 @@ The current version of the plugin ships with the following dictionary files:
 
 - Wordlist extracted from the [multi-script version of the declaration of human rights](https://unicode.org/udhr/assemblies/full_all.txt) covering a large number of scripts
 - Words with accented latin letters from [Setuptype](http://setuptype.com)’s [Context of Diacritics](http://www.urtd.net/x/cod/) (included with permission)
+- Words with Vietnamese diacritics from [Alda’s online specimen](https://vietnamesetypography.com/type-recommendations/alda/) (included with permission)
 
 Have a good dictionary? List of words containing words with obscure glyphs? Files covering non-latin scripts? I'd happily add them, open an issue here or [email me](mailto:support@underscoretype.com).
 
-To generate more *usable* (i.e. cleaned up, no duplicates) dictionary files from your own dictionary files feel free to use the included [fileparser.py](https://github.com/underscoretype/glyphs-plugin-wordfinder/blob/master/fileparser.py): `python fileparser.py textfile.txt` will save an optimised `textfile-parsed.txt`.
+☞ To generate more *usable* (i.e. cleaned up, no duplicates, no non-words) dictionary files from your own dictionary files feel free to use the included [fileparser.py](https://github.com/underscoretype/glyphs-plugin-wordfinder/blob/master/fileparser.py): `python fileparser.py textfile.txt` will save an optimised `textfile-parsed.txt`.
 
 ### About
 
