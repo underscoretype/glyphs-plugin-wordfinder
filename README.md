@@ -56,6 +56,22 @@ Have a good dictionary? List of words containing words with obscure glyphs? File
 
 ☞ To generate more *usable* (i.e. cleaned up, no duplicates, no non-words) dictionary files from your own dictionary files feel free to use the included [fileparser.py](https://github.com/underscoretype/glyphs-plugin-wordfinder/blob/master/fileparser.py): `python fileparser.py textfile.txt` will save an optimised `textfile-parsed.txt`.
 
+### Changelog
+
+* 1.0.5
+	* TWEAK Default dictionary includes better Vietnamese character coverage
+* 1.0.4
+	* FIX Tolerate selection of GSControlLayer (thanks @mekkablue)
+* 1.0.3 
+	* FIX Error free handling for unicode ranges beyond #FFFF
+* 1.0.2 
+	* TWEAK More extensive dictionary
+	* FEATURE Included fileparser script for do-it-yourself generation of more suitable text files
+* 1.0.1 
+	* FIX Properly include default dictionary
+* 1.0.0 
+	* Initial public release
+
 ### About
 
 [Wordfinder](https://github.com/underscoretype/glyphs-plugin-wordfinder) is brought to you by [Underscore Type](https://underscoretype.com).

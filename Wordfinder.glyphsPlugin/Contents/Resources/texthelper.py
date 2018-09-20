@@ -47,7 +47,7 @@ def weightWords(words, letters):
     """
     Given a list of words and letters of interest
     Return List of each word's letter's weight
-    The List is in same order or the words
+    The List is in same order of the words
     The List with the weights is the same order as the passed in letters
     Letters that don't occur in the word have 0 for that letter
     Example:
@@ -74,7 +74,7 @@ def weightLetters(words, letters):
     """
     Given a list of words and letters of interest count globally all letter
     occurrances
-    Return Dict of { letter: occurrances } paris
+    Return Dict of { letter: occurrances } pairs
     """
     occurrances = {}
     for word in words:
