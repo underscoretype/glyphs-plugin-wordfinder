@@ -80,11 +80,20 @@ def wordfinder(available, required, customDir=None):
 			#illegal = set(required).difference(set(available))
 			required = list(set(required).intersection(set(available)))
 
-		lastWriteable = filterWritableWords(words, available)
+		# if only one character is searched, we can right away pick
+		# words that contain that one glyphs
+		if len(required) == 1:
+			lastWriteable = filterInterestWords(words, required)
+		else:
+			lastWriteable = filterWritableWords(words, available)
 		lastAvailable = available
 	
 	if required != lastRequired:
-		lastInteresting = filterInterestWords(lastWriteable, required)
+		# if only one character is searched, use the writeable words
+		if len(required) == 1:
+			lastInteresting = lastWriteable
+		else:
+			lastInteresting = filterInterestWords(lastWriteable, required)
 		lastRequired = required
 
 	matches = []
@@ -152,4 +161,4 @@ if __name__ == "__main__":
 	availableLetters = [ u"ß", u"ÿ", u"á", "a", "b", "c", "d", "e", "f", 
 		"g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", 
 		"u", "v", "w", "x", "y", "z", u"è", u"é", "A", "B", "C", "D", u"ä", u"ü"]
-	wordfinder(availableLetters, [u"ü", "z", u"è", u"é"])
+	wordfinder(availableLetters, [u"ß",])

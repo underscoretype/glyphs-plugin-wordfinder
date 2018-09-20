@@ -59,6 +59,7 @@ Have a good dictionary? List of words containing words with obscure glyphs? File
 ### Changelog
 
 * 1.0.5
+	* TWEAK Search speed increase for finding words for only a single character
 	* TWEAK Default dictionary includes better Vietnamese character coverage
 * 1.0.4
 	* FIX Tolerate selection of GSControlLayer (thanks @mekkablue)
