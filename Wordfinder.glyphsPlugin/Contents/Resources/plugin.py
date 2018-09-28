@@ -35,6 +35,45 @@ class Wordfinder(GeneralPlugin):
         print "Wordfinder: You can set a custom directory from which to read text files as a font Custom Parameter called 'Wordfinder'"
 
 
+    def getGlyphUnicodes(self, glyph):
+        """
+        Helper function: Given a selected glyph, try return a list of Glyphs glyph.unicode strings
+        Can be one or more unicodes of the glyph, or its components
+        """
+        font = Glyphs.fonts[0]
+
+        if glyph.unicode:
+            return [glyph.unicode]
+            
+        match = re.match('([^.]*)', glyph.name)
+        unicodes = []
+
+        # following Glyph’s conventions, glyphs with a dot in the name
+        # are variants; let’s try to extract unicodes from either a base
+        # glyph or nested components
+        # e.g. f.ss01 => f’s unicode
+        # e.g. f_f_l.liga => f’s and l’s unicodes
+        if match:
+            basename = match.groups()[0]
+            g = font.glyphs[basename]
+            
+            if g:
+                if g.unicode:
+                    # if what we extracted is a glyph and has a unicode, return that
+                    unicodes.append(g.unicode)
+            
+            else:
+                # if the extracted part is in itself not a glyph, let’s try from
+                # components
+                if glyph.layers[font.selectedFontMaster.name].components:
+                    for c in glyph.layers[font.selectedFontMaster.name].components:
+                        nested = self.getGlyphUnicodes(c.component)
+                        if nested:
+                            unicodes = unicodes + nested
+                    
+        return list(set(unicodes))
+
+
     def findWords(self, menuItem):
         font = Glyphs.fonts[0]
         tab = font.currentTab
@@ -56,13 +95,16 @@ class Wordfinder(GeneralPlugin):
             for layer in font.selectedLayers:
                 if layer.isMemberOfClass_(GSLayer):
                     glyph = layer.parent
-                    if glyph.unicode:
-                        selected.append(unichar(int(glyph.unicode, 16)))
+                    unicodes = self.getGlyphUnicodes(glyph)
+                    if unicodes:
+                        selected = selected + [unichar(int(u, 16)) for u in unicodes]
 
         if not selected:
             return
 
         # filter out non-word chars from the selected glyphs
+        # TODO in the future this might behave smarter, e.g. numbers or punctuation might be nice
+        # to simple insert "dumbly" into the results
         selected = [s for s in selected if re.search('\W+', s, re.UNICODE) == None]
 
         try:
