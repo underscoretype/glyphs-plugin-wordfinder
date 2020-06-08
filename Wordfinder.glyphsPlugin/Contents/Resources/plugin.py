@@ -12,6 +12,7 @@
 #
 ###########################################################################################################
 
+from __future__ import print_function
 import objc, sys, re
 from GlyphsApp import *
 from GlyphsApp.plugins import *
@@ -20,11 +21,11 @@ from wordfinder import *
 from texthelper import unichar
 
 class Wordfinder(GeneralPlugin):
-    
+    @objc.python_method
     def settings(self):
         self.name = Glyphs.localize({'en': u'Wordfinder'})
 
-
+    @objc.python_method
     def start(self):
         # create a menu item with its name, and a reference to the method it shoud invoke:
         newMenuItem = NSMenuItem(self.name, self.findWords)
@@ -32,15 +33,15 @@ class Wordfinder(GeneralPlugin):
         # append the menu item to one of the menus:
         Glyphs.menu[GLYPH_MENU].append(newMenuItem)
 
-        print "Wordfinder: You can set a custom directory from which to read text files as a font Custom Parameter called 'Wordfinder'"
+        print("Wordfinder: You can set a custom directory from which to read text files as a font Custom Parameter called 'Wordfinder'")
 
-
+    @objc.python_method
     def getGlyphUnicodes(self, glyph):
         """
         Helper function: Given a selected glyph, try return a list of Glyphs glyph.unicode strings
         Can be one or more unicodes of the glyph, or its components
         """
-        font = Glyphs.fonts[0]
+        font = glyph.font
 
         if glyph.unicode:
             return [glyph.unicode]
@@ -61,7 +62,7 @@ class Wordfinder(GeneralPlugin):
                 if g.unicode:
                     # if what we extracted is a glyph and has a unicode, return that
                     unicodes.append(g.unicode)
-            
+
             else:
                 # if the extracted part is in itself not a glyph, let’s try from
                 # components
@@ -70,10 +71,10 @@ class Wordfinder(GeneralPlugin):
                         nested = self.getGlyphUnicodes(c.component)
                         if nested:
                             unicodes = unicodes + nested
-                    
+
         return list(set(unicodes))
 
-
+    @objc.python_method
     def findWords(self, menuItem):
         font = Glyphs.fonts[0]
         tab = font.currentTab
@@ -110,7 +111,7 @@ class Wordfinder(GeneralPlugin):
         try:
             words, missing = wordfinder(glyphs, selected, font.customParameters["Wordfinder"])
             if words or missing:
-                text = " ".join(words)            
+                text = " ".join(words)
                 if len(missing) > 0:
                     text = text + "\n" + "".join(missing)
 
