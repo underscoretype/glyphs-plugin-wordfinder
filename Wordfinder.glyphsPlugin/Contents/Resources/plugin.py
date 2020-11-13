@@ -41,7 +41,7 @@ class Wordfinder(GeneralPlugin):
         Helper function: Given a selected glyph, try return a list of Glyphs glyph.unicode strings
         Can be one or more unicodes of the glyph, or its components
         """
-        font = glyph.font
+        font = glyph.parent
 
         if glyph.unicode:
             return [glyph.unicode]
