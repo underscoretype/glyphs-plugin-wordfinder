@@ -94,7 +94,7 @@ class Wordfinder(GeneralPlugin):
 
         if font.selectedLayers:
             for layer in font.selectedLayers:
-                if layer.isMemberOfClass_(GSLayer):
+                if isinstance(layer, GSLayer):
                     glyph = layer.parent
                     unicodes = self.getGlyphUnicodes(glyph)
                     if unicodes:
