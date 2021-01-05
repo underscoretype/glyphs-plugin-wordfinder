@@ -9,8 +9,10 @@ def unichar(i):
     A way to return unicode chars for the range above FFFF for "narrow python builds"
     Solution from https://stackoverflow.com/a/28326717/999162
     """
-    try:
+    try: # Python 2
         return unichr(i)
+    except NameError: # Python 3
+        return chr(i)
     except ValueError:
         return struct.pack('i', i).decode('utf-32')
 

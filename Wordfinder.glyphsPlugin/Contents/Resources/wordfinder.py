@@ -5,6 +5,7 @@ import os, random, re, sys
 
 from filereader import loadWords
 from texthelper import filterWritableWords, filterInterestWords, weightWords
+from functools import reduce
 
 
 # keep a global record of words, so we don't need to reload them for each call
@@ -147,7 +148,7 @@ def bestWord(values):
 	if matches:
 		match = random.choice(matches)
 
-		return match.values()[0]
+		return list(match.values())[0]
 
 	return False
 

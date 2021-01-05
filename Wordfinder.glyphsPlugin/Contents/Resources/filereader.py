@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os, re
+from io import open
 
 def load(path):
 	"""
@@ -11,8 +12,8 @@ def load(path):
 	if not os.path.isfile(path):
 		return False
 	else:
-		file = open(path, "r")
-		txt = file.read().decode("utf-8")
+		file = open(path, "r", encoding="utf8")
+		txt = file.read()
 	return txt
 
 
