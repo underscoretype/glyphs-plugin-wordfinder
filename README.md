@@ -58,6 +58,8 @@ Have a good dictionary? List of words containing words with obscure glyphs? File
 
 ### Changelog
 
+* 1.2.0
+	* FIX Making the plugin fully compatible with Glyphs 3 / Python 3, many thanks to [Henrique Beier](https://github.com/harbortype)!
 * 1.1.0
 	* TWEAK Selecting glyphs like a.alt or f_f.liga the plugin will extract base base characters for finding words
 * 1.0.5
