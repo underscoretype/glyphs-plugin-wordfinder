@@ -90,7 +90,7 @@ class Wordfinder(GeneralPlugin):
             return
 
         # filter out non-word chars from the available glyphs
-        glyphs = [g for g in glyphs if re.search('\W+', g, re.UNICODE) == None]
+        glyphs = [g for g in glyphs if re.search('\\W+', g, re.UNICODE) == None]
 
         if font.selectedLayers:
             for layer in font.selectedLayers:
@@ -106,7 +106,7 @@ class Wordfinder(GeneralPlugin):
         # filter out non-word chars from the selected glyphs
         # TODO in the future this might behave smarter, e.g. numbers or punctuation might be nice
         # to simple insert "dumbly" into the results
-        selected = [s for s in selected if re.search('\W+', s, re.UNICODE) == None]
+        selected = [s for s in selected if re.search('\\W+', s, re.UNICODE) == None]
 
         try:
             words, missing = wordfinder(glyphs, selected, font.customParameters["Wordfinder"])
