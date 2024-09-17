@@ -1,8 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import os, re
+import os
+import re
 from io import open
+
 
 def load(path):
 	"""
@@ -28,7 +30,7 @@ def loadWords(directory):
 		try:
 			loaded = load(directory + file)
 			if loaded:
-				for part in re.compile("\s").split(loaded):
+				for part in re.compile(r"\s").split(loaded):
 					words.append(part)
 		except:
 			words = words

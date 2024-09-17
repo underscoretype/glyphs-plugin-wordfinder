@@ -1,7 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import os, random, re, sys
+import os
+import random
+import sys
 
 from filereader import loadWords
 from texthelper import filterWritableWords, filterInterestWords, weightWords
@@ -27,18 +29,17 @@ def getWords(customDir=None):
 
 	loaded = 0
 
-	if customDir != None and customDir[-1:] != "/":
+	if customDir is not None and customDir[-1:] != "/":
 		customDir = customDir + "/"
 
 	# after first use return the cached word list instead of making
 	# another file read; this can be a substantial portion of the
 	# compute time to find a matching word!
-	if len(words) != 0 and (lastDir == customDir and customDir != None):
-		
+	if len(words) != 0 and (lastDir == customDir and customDir is not None):
 		return words
 
 	try:
-		if customDir != None:
+		if customDir is not None:
 			lastDir = customDir
 			words = loadWords(lastDir)
 			loaded = len(words)
@@ -54,7 +55,7 @@ def getWords(customDir=None):
 	title = [word.capitalize() for word in words]
 	caps = [word.upper() for word in words]
 	lower = [word.lower() for word in words]
-	
+
 	words = words + title + caps + lower
 	words = list(set(words))
 
@@ -63,7 +64,7 @@ def getWords(customDir=None):
 
 def wordfinder(available, required, customDir=None):
 	"""
-	Attempt to find the least amount of words spelled from the available 
+	Attempt to find the least amount of words spelled from the available
 	letters and using all required letters
 	"""
 	global lastAvailable, lastRequired, lastWriteable, lastInteresting
@@ -88,7 +89,7 @@ def wordfinder(available, required, customDir=None):
 		else:
 			lastWriteable = filterWritableWords(words, available)
 		lastAvailable = available
-	
+
 	if required != lastRequired:
 		# if only one character is searched, use the writeable words
 		if len(required) == 1:
@@ -104,7 +105,7 @@ def wordfinder(available, required, customDir=None):
 		wordsValues = weightWords(universe, required)
 
 		bestWordIndex = bestWord(wordsValues)
-		if bestWordIndex == False:
+		if not bestWordIndex:
 			break
 
 		match = universe[bestWordIndex]
@@ -114,14 +115,14 @@ def wordfinder(available, required, customDir=None):
 		required = list(set(required).difference(set(letters)))
 
 	return matches, required
-	
+
 
 def bestWord(values):
 	"""
 	From a List of Lists with values
 	Return the index of the word with the best values
 	Greedy first: The List with most non-0 entries first
-	Quality second: Of Lists with same number of entries, pick the one with 
+	Quality second: Of Lists with same number of entries, pick the one with
 	combined lowest value (rarest letters)
 	Example:
 	values: [[0,1,10], [0,0,2], [5, 2, 0]]
@@ -147,7 +148,6 @@ def bestWord(values):
 
 	if matches:
 		match = random.choice(matches)
-
 		return list(match.values())[0]
 
 	return False
@@ -159,7 +159,9 @@ def prettyList(li):
 
 # dummy testing on cli
 if __name__ == "__main__":
-	availableLetters = [ u"ß", u"ÿ", u"á", "a", "b", "c", "d", "e", "f", 
-		"g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", 
-		"u", "v", "w", "x", "y", "z", u"è", u"é", "A", "B", "C", "D", u"ä", u"ü"]
+	availableLetters = [
+		u"ß", u"ÿ", u"á", "a", "b", "c", "d", "e", "f", "g", "h", "i",
+		"j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v",
+		"w", "x", "y", "z", u"è", u"é", "A", "B", "C", "D", u"ä", u"ü"
+	]
 	wordfinder(availableLetters, [u"ß",])
