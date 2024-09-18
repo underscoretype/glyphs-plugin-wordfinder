@@ -1,7 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import re, struct
+import re
+import struct
 
 
 def unichar(i):
@@ -9,9 +10,9 @@ def unichar(i):
     A way to return unicode chars for the range above FFFF for "narrow python builds"
     Solution from https://stackoverflow.com/a/28326717/999162
     """
-    try: # Python 2
+    try:  # Python 2
         return unichr(i)
-    except NameError: # Python 3
+    except NameError:  # Python 3
         return chr(i)
     except ValueError:
         return struct.pack('i', i).decode('utf-32')
@@ -28,7 +29,7 @@ def filterWritableWords(words, letters):
     # very efficient way of determining if a word is made up entirely of the supplied
     # characters; fails fast if the word contains NO characters at all, and faster
     # second check with regex, compared to for .. in
-    filtered = [w for w in words if containsSomeLetters.search(w) != None and containsOtherLetters.search(w) == None]
+    filtered = [w for w in words if containsSomeLetters.search(w) is not None and containsOtherLetters.search(w) is None]
 
     return filtered
 
@@ -40,7 +41,7 @@ def filterInterestWords(words, letters):
     """
     containsSomeLetters = re.compile("[" + "".join(letters) + "]+", re.UNICODE)
 
-    filtered = [w for w in words if containsSomeLetters.search(w) != None]
+    filtered = [w for w in words if containsSomeLetters.search(w) is not None]
 
     return filtered
 
@@ -90,4 +91,3 @@ def weightLetters(words, letters):
                 occurrances[letter] = occurrances[letter] + 1
 
     return occurrances
-    

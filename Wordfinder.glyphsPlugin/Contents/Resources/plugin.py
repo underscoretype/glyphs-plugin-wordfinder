@@ -13,12 +13,15 @@
 ###########################################################################################################
 
 from __future__ import print_function
-import objc, sys, re
-from GlyphsApp import *
-from GlyphsApp.plugins import *
+import objc
+import sys
+import re
+from GlyphsApp import Glyphs, GSLayer, GLYPH_MENU, NSMenuItem
+from GlyphsApp.plugins import GeneralPlugin
 
-from wordfinder import *
+from wordfinder import wordfinder
 from texthelper import unichar
+
 
 class Wordfinder(GeneralPlugin):
     @objc.python_method
@@ -29,7 +32,7 @@ class Wordfinder(GeneralPlugin):
     def start(self):
         # create a menu item with its name, and a reference to the method it shoud invoke:
         newMenuItem = NSMenuItem(self.name, self.findWords)
-        
+
         # append the menu item to one of the menus:
         Glyphs.menu[GLYPH_MENU].append(newMenuItem)
 
@@ -45,7 +48,7 @@ class Wordfinder(GeneralPlugin):
 
         if glyph.unicode:
             return [glyph.unicode]
-            
+
         match = re.match('([^.]*)', glyph.name)
         unicodes = []
 
@@ -57,7 +60,7 @@ class Wordfinder(GeneralPlugin):
         if match:
             basename = match.groups()[0]
             g = font.glyphs[basename]
-            
+
             if g:
                 if g.unicode:
                     # if what we extracted is a glyph and has a unicode, return that
@@ -90,7 +93,7 @@ class Wordfinder(GeneralPlugin):
             return
 
         # filter out non-word chars from the available glyphs
-        glyphs = [g for g in glyphs if re.search('\\W+', g, re.UNICODE) == None]
+        glyphs = [g for g in glyphs if re.search('\\W+', g, re.UNICODE) is None]
 
         if font.selectedLayers:
             for layer in font.selectedLayers:
@@ -106,7 +109,7 @@ class Wordfinder(GeneralPlugin):
         # filter out non-word chars from the selected glyphs
         # TODO in the future this might behave smarter, e.g. numbers or punctuation might be nice
         # to simple insert "dumbly" into the results
-        selected = [s for s in selected if re.search('\\W+', s, re.UNICODE) == None]
+        selected = [s for s in selected if re.search('\\W+', s, re.UNICODE) is None]
 
         try:
             words, missing = wordfinder(glyphs, selected, font.customParameters["Wordfinder"])

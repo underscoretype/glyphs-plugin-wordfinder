@@ -6,7 +6,10 @@ to use for extracting sensible words from a text file passed in as
 first argument
 '''
 
-import sys, os, re, codecs
+import sys
+import os
+import re
+import codecs
 
 
 if (len(sys.argv) != 2):
@@ -16,7 +19,7 @@ file = codecs.open(sys.argv[1], "r", "utf8")
 text = file.read()
 
 # remove punctuation marks
-text = re.sub(ur"[\d|\,|\.|\;|\:|\(|\)|\[|\]|\"|。|，|、|（|）]+", " ", text, 0, re.UNICODE)
+text = re.sub(r"[\d|\,|\.|\;|\:|\(|\)|\[|\]|\"|。|，|、|（|）]+", " ", text, 0, re.UNICODE)
 
 # get rid of very plain latin ("ascii") words
 text = re.sub(r"\b[a-zA-Z]{,5}\b", " ", text, 0, re.UNICODE)
